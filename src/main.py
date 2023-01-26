@@ -5,6 +5,8 @@ import data_loader
 
 from models.bert import Bert
 import trainer
+import tester
+import model_util as mu
 
 import torch, gc
 import torch.nn as nn
@@ -128,59 +130,6 @@ def main(config):
 	# ********** GET OPTIMIZER **********
 	optimizer = get_optimizer(model, config)
 
-
-	'''
-	device = next(model.parameters()).device
-
-	for epoch_i in range(10):
-	
-		# ========= TRAINING =========
-
-		#Put the model into training mode
-		model.train()
-
-		tot_train_acc = []
-		tot_train_loss = []
-
-		for batch_idx, batch in enumerate(train):
-			batch_input = batch[0]
-			batch_label = batch[1]
-
-			# *** LOAD BATCH TO DEVICE ***
-			batch_label = batch_label.to(device)
-			# |battch_label = (batch_size)
-
-			mask = batch_input['attention_mask'].to(device)
-			# |mask| = (batch_size, max_length)
-
-			input_id = batch_input['input_ids'].squeeze(1).to(device)
-			# |input_id| = (batch_size, max_length)
-
-			optimizer.zero_grad()
-
-			# *** PREDICT ***
-			y_hat = model(input_id, mask)
-			# |y_hat| = (batch_size, binary(2))
-
-			# *** CALCULATE LOSS ***
-			loss = crit(y_hat, batch_label)
-			tot_train_loss.append(loss.item())
-
-			# *** CALCULATE ACCURACY ***
-			pred = y_hat.argmax(1).flatten()
-			acc = (pred == batch_label).cpu().numpy().mean() * 100
-			tot_train_acc.append(acc)
-
-			# *** TRAIN MODEL ***
-			loss.backward()
-			optimizer.step()
-
-		# Calculate the average loss over the entire training data
-		train_loss = np.mean(tot_train_loss)
-		train_acc = np.mean(tot_train_acc)
-
-		print(epoch_i, train_loss, train_acc)
-	'''
 	# ********** INSTANTIATE TENSORBOARD **********
 	subject_title = config.research_subject
 
@@ -189,10 +138,10 @@ def main(config):
 
 	title = subject_title + '_' + config.research_num
 
-	start_time = timeit.default_timer()
-
 
 	# ********** TRAIN MODEL **********
+	start_time = timeit.default_timer()
+
 	trainer.train(
 		model=model,
 		crit=crit,
@@ -203,6 +152,28 @@ def main(config):
 		writer=writer,
 		title=title
 	)
+
+	end_time = (timeit.default_timer() - start_time) / 60.0
+
+	print('total take time: ', end_time)
+
+
+	# ********** SAVE & BRING MODEL **********
+	mu.saveModel(subject_title, title, model)
+	# mu.graphModel(train, model, writer, device)
+
+
+	# ********** SAVE & BRING MODEL **********
+	test_loss, test_acc = tester.test(
+		model=model,
+		crit=crit,
+		test_loader=test
+	)
+
+	print('test loss: ', test_loss)
+	print('test acc: ', test_acc)
+
+
 
 
 if __name__ == '__main__':
