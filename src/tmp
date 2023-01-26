@@ -1,4 +1,0 @@
-paths = ['../data/train.negative.csv',
-			'../data/train.non-negative.csv',
-			'../data/test.negative.csv',
-			'../data/test.non-negative.csv']
