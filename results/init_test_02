@@ -1,0 +1,28 @@
+{   'batch_size': 16,
+    'dropout': 0.2,
+    'lr': 2e-05,
+    'max_length': 50,
+    'n_epochs': 5,
+    'research_num': '02',
+    'research_subject': 'init_test'}
+train: 11714
+validation:  2929
+test:  200
+
+Using device number:  0
+Start training...
+ Epoch  |  Train Loss  | Train Acc  | Val Loss | Val Acc | Elapsed
+--------------------------------------------------------------------------------
+   1    |   0.452101   | 72.561392  | 0.293974 | 87.91  | 61.92 
+   2    |   0.333659   | 79.894270  | 0.277290 | 88.62  | 61.75 
+   3    |   0.269262   | 82.972374  | 0.281431 | 88.28  | 62.01 
+   4    |   0.223785   | 84.541269  | 0.307528 | 88.96  | 62.01 
+   5    |   0.185989   | 86.400068  | 0.356623 | 87.91  | 62.03 
+
+
+Training complete! Best accuracy: 88.96%.
+total take time:  5.162018139016194
+
+Using device number: 0
+test loss:  0.40034094653450525
+test acc:  87.98076923076923

@@ -6,16 +6,23 @@ class Bert(nn.Module):
 		super(Bert, self).__init__()
 
 		self.bert = BertModel.from_pretrained('bert-base-uncased')
-		self.dropout = nn.Dropout(dropout)
+		# self.dp = nn.Dropout(dropout)
+
 		self.fc1 = nn.Linear(768, 512)
 		self.relu1 = nn.ReLU()
+		self.dp1 = nn.Dropout(dropout)
+
 		self.fc2 = nn.Linear(512, 2)
 		self.relu2 = nn.ReLU()
+		self.dp2 = nn.Dropout(dropout)
+
 	
 	def forward(self, input_id, mask):
 		_, pooled_output = self.bert(input_ids=input_id, attention_mask=mask, return_dict=False)
-		dp = self.dropout(pooled_output)
-		fc1 = self.relu1(self.fc1(dp))
-		y_hat = self.relu2(self.fc2(fc1))
+		# dp = self.dp(pooled_output)
+
+		fc1 = self.dp1(self.relu1(self.fc1(pooled_output)))
+		# fc1 = self.dp1(self.relu1(self.fc1(dp)))
+		y_hat = self.dp2(self.relu2(self.fc2(fc1)))
 
 		return y_hat
