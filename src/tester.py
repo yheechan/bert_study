@@ -1,11 +1,14 @@
 import torch
 import numpy as np
 from tqdm import tqdm
+from sklearn import metrics
+import pandas as pd
 
 def test(
 	model,
 	crit,
 	test_loader=None,
+	title=None,
 ):
 
 	# check for available gpu
@@ -27,6 +30,10 @@ def test(
 	tot_test_acc = []
 
 	device = next(model.parameters()).device
+
+	# initiate for confusion matrix
+	tot_preds = torch.empty(0).to(device)
+	tot_labels = torch.empty(0).to(device)
 
 	# For each batch in our test set...
 	for batch_input, batch_label in tqdm(test_loader):
@@ -54,8 +61,16 @@ def test(
 		acc = (pred == batch_label).cpu().numpy().mean() * 100
 		tot_test_acc.append(acc)
 
+		# save for confusion matrix
+		tot_preds = torch.cat((tot_preds, pred))
+		tot_labels = torch.cat((tot_labels, batch_label))
+
 	# Calculate the average loss over the entire training data
 	test_loss = np.mean(tot_test_loss)
 	test_acc = np.mean(tot_test_acc)
+
+	cm = metrics.classification_report(tot_labels.cpu(), tot_preds.cpu(), output_dict=True)
+	cm_df = pd.DataFrame.from_dict(cm).transpose()
+	cm_df.to_csv('../confusion_matrix/'+title+'.csv')
 
 	return test_loss, test_acc

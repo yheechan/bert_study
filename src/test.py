@@ -97,7 +97,8 @@ def main(config):
 	test_loss, test_acc = tester.test(
 		model=model,
 		crit=crit,
-		test_loader=test
+		test_loader=test,
+		title=title,
 	)
 
 	print('test loss: ', test_loss)
