@@ -4,7 +4,6 @@ import pprint
 import data_loader
 
 from models.bert import Bert
-import trainer
 import tester
 import model_util as mu
 
@@ -14,8 +13,6 @@ from torch import optim
 
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
-
-import timeit
 
 def define_argparser():
 	p = argparse.ArgumentParser()
@@ -44,27 +41,6 @@ def define_argparser():
 		type=int,
 		default=512,
 		help='Maximum length of the training sequence. Default=%(default)s',
-	)
-
-	p.add_argument(
-		'--dropout',
-		type=float,
-		default=0.0,
-		help='Dropout rate. Default=%(default)s',
-	)
-
-	p.add_argument(
-		'--lr',
-		type=float,
-		default=0.0001,
-		help='Initial learning rate. Default=%(default)s',
-	)
-
-	p.add_argument(
-		'--n_epochs',
-		type=int,
-		default=20,
-		help='Number of epochs to train. Default%(default)s',
 	)
 
 	config = p.parse_args()
@@ -105,59 +81,14 @@ def main(config):
 												max_length=config.max_length)
 
 	
-	# ********** GET MODEL, LOSS FUNCTION - MOVED TO DEVICE **********
-	model = get_model(config)
+	# ********** LOSS FUNCTION **********
 	crit = get_crit()
 
-	if torch.cuda.is_available():
-		device_num = 0
-	else:
-		device_num = -1
-	
-	print('\nUsing device number: ', device_num)
-
-	gc.collect()
-	torch.cuda.empty_cache()
-
-	if device_num >= 0:
-		model.cuda(device_num)
-		crit.cuda(device_num)
 
 
-	# ********** GET OPTIMIZER **********
-	optimizer = get_optimizer(model, config)
-
-	# ********** INSTANTIATE TENSORBOARD **********
+	# ********** BRING MODEL **********
 	subject_title = config.research_subject
-
-	timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-	writer = SummaryWriter('../tensorboard/'+subject_title+'/tests')
-
 	title = subject_title + '_' + config.research_num
-
-
-	# ********** TRAIN MODEL **********
-	start_time = timeit.default_timer()
-
-	trainer.train(
-		model=model,
-		crit=crit,
-		optimizer=optimizer,
-		train_loader=train,
-		valid_loader=valid,
-		n_epochs=config.n_epochs,
-		writer=writer,
-		title=title
-	)
-
-	end_time = (timeit.default_timer() - start_time) / 60.0
-
-	print('total take time: ', end_time)
-
-
-	# ********** SAVE & BRING MODEL **********
-	mu.saveModel(subject_title, title, model)
-	# mu.graphModel(train, model, writer, device)
 
 	model = mu.getModel(subject_title, title)
 
