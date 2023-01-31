@@ -12,9 +12,13 @@ class Bert(nn.Module):
 		self.relu1 = nn.ReLU()
 		self.dp1 = nn.Dropout(dropout)
 
-		self.fc2 = nn.Linear(512, 2)
+		self.fc2 = nn.Linear(512, 512)
 		self.relu2 = nn.ReLU()
 		self.dp2 = nn.Dropout(dropout)
+
+		self.fc3 = nn.Linear(512, 2)
+		self.relu3 = nn.ReLU()
+		self.dp3 = nn.Dropout(dropout)
 
 	
 	def forward(self, input_id, mask):
@@ -23,7 +27,7 @@ class Bert(nn.Module):
 		# dp = self.dp(pooled_output)
 
 		fc1 = self.dp1(self.relu1(self.fc1(pooled_output)))
-		# fc1 = self.dp1(self.relu1(self.fc1(dp)))
-		y_hat = self.dp2(self.relu2(self.fc2(fc1)))
+		fc2 = self.dp2(self.relu2(self.fc2(fc1)))
+		y_hat = self.dp3(self.relu3(self.fc3(fc2)))
 
 		return y_hat

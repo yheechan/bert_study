@@ -17,6 +17,7 @@ from datetime import datetime
 
 import timeit
 
+
 def define_argparser():
 	p = argparse.ArgumentParser()
 
@@ -71,6 +72,7 @@ def define_argparser():
 
 	return config
 
+
 def get_model(config):
 	model = Bert(dropout=config.dropout)
 	return model
@@ -109,6 +111,11 @@ def main(config):
 	model = get_model(config)
 	crit = get_crit()
 
+	# Set bert model not to be trained
+	for param in model.bert.parameters():
+		param.requires_grad = False
+
+	# Check if GPU is available
 	if torch.cuda.is_available():
 		device_num = 0
 	else:
@@ -116,9 +123,11 @@ def main(config):
 	
 	print('\nUsing device number: ', device_num)
 
+	# Clean cache memory
 	gc.collect()
 	torch.cuda.empty_cache()
 
+	# Move model and loss function to GPU device if available
 	if device_num >= 0:
 		model.cuda(device_num)
 		crit.cuda(device_num)
@@ -152,7 +161,7 @@ def main(config):
 
 	end_time = (timeit.default_timer() - start_time) / 60.0
 
-	print('total take time: ', end_time)
+	print('training time: ', end_time)
 
 
 	# ********** SAVE & BRING MODEL **********

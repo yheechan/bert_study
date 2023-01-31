@@ -62,7 +62,7 @@ def data_loader(paths, batch_size=16, max_length=512):
 	test_y_np = np.array(test_neg_y_ls + test_non_y_ls)
 
 	# split train to train and validation dataset
-	train_x_np, valid_x_np, train_y_np, valid_y_np = train_test_split(train_x_np, train_y_np, test_size=0.2, random_state=42, shuffle=True)
+	train_x_np, valid_x_np, train_y_np, valid_y_np = train_test_split(train_x_np, train_y_np, test_size=0.1, random_state=42, shuffle=True)
 
 	print('train:', len(train_x_np))
 	print('validation: ', len(valid_x_np))
