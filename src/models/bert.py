@@ -19,6 +19,7 @@ class Bert(nn.Module):
 	
 	def forward(self, input_id, mask):
 		_, pooled_output = self.bert(input_ids=input_id, attention_mask=mask, return_dict=False)
+		# |pooled_output| = (batch_size, 728) -> output of [CLS] token
 		# dp = self.dp(pooled_output)
 
 		fc1 = self.dp1(self.relu1(self.fc1(pooled_output)))
