@@ -17,6 +17,8 @@ from datetime import datetime
 
 import timeit
 
+from transformers import AdamW
+
 
 def define_argparser():
 	p = argparse.ArgumentParser()
@@ -82,7 +84,9 @@ def get_crit():
 	return crit
 
 def get_optimizer(model, config):
-	optimizer = optim.Adam(model.parameters(), lr=config.lr)
+	# optimizer = optim.Adam(model.parameters(), lr=config.lr)
+	optimizer = AdamW(model.parameters(), lr=config.lr)
+
 	return optimizer
 	
 
