@@ -1,0 +1,28 @@
+{   'batch_size': 16,
+    'dropout': 0.2,
+    'lr': 2e-05,
+    'max_length': 50,
+    'n_epochs': 5,
+    'research_num': 'allFirst02',
+    'research_subject': 'double_train'}
+train: 11714
+validation:  2929
+test:  200
+
+Using device number:  0
+Start training...
+ Epoch  |  Train Loss  | Train Acc  | Val Loss | Val Acc | Elapsed
+--------------------------------------------------------------------------------
+   1    |   0.450426   | 74.258186  | 0.298108 | 87.70  | 63.91 
+   2    |   0.334808   | 80.150068  | 0.319985 | 86.89  | 64.18 
+   3    |   0.258551   | 83.799454  | 0.298821 | 87.74  | 64.40 
+   4    |   0.205393   | 85.572988  | 0.349150 | 88.42  | 64.04 
+   5    |   0.186503   | 86.118690  | 0.363425 | 88.04  | 63.65 
+
+
+Training complete! Best accuracy: 88.42%.
+training time:  5.336299687766647
+
+Using device number: 0
+test loss:  0.5036948473694233
+test acc:  85.57692307692308
