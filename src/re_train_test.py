@@ -119,7 +119,11 @@ def main(config):
 	crit = get_crit()
 
 	# Set bert model not to be trained
+	'''
 	for param in model.classification.parameters():
+		param.requires_grad = False
+	'''
+	for param in model.bert.parameters():
 		param.requires_grad = False
 
 	# Check if GPU is available

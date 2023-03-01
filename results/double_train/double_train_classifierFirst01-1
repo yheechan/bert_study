@@ -8,8 +8,3 @@
 train: 11714
 validation:  2929
 test:  200
-
-Using device number:  0
-Start training...
- Epoch  |  Train Loss  | Train Acc  | Val Loss | Val Acc | Elapsed
---------------------------------------------------------------------------------

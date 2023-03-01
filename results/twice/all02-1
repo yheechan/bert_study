@@ -1,0 +1,28 @@
+{   'batch_size': 16,
+    'dropout': 0.2,
+    'lr': 2e-05,
+    'max_length': 50,
+    'n_epochs': 5,
+    'research_num': 'all02',
+    'research_subject': 'twice'}
+train: 11714
+validation:  2929
+test:  200
+
+Using device number:  0
+Start training...
+ Epoch  |  Train Loss  | Train Acc  | Val Loss | Val Acc | Elapsed
+--------------------------------------------------------------------------------
+   1    |   0.490068   | 71.214188  | 0.410526 | 81.79  | 18.02 
+   2    |   0.487236   | 71.231241  | 0.411118 | 81.62  | 17.70 
+   3    |   0.481268   | 72.407913  | 0.409858 | 82.07  | 17.77 
+   4    |   0.478904   | 72.186221  | 0.409202 | 81.76  | 17.82 
+   5    |   0.489518   | 71.299454  | 0.408102 | 81.79  | 17.84 
+
+
+Training complete! Best accuracy: 82.07%.
+training time:  1.4857458462162565
+
+Using device number: 0
+test loss:  0.44385563180996823
+test acc:  81.73076923076923
