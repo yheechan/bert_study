@@ -4,6 +4,8 @@ import pprint
 import data_loader
 
 from models.bert import Bert
+from models.lastFour import LastFour
+
 import trainer
 import tester
 import model_util as mu
@@ -70,13 +72,29 @@ def define_argparser():
 		help='Number of epochs to train. Default%(default)s',
 	)
 
+	p.add_argument(
+		'--train_bert',
+		required=True,
+		help='Bert Model trained if True.',
+	)
+
+	p.add_argument(
+		'--train_type',
+		required=True,
+		help='The type to train model. (ex. Last Four)',
+	)
+
 	config = p.parse_args()
 
 	return config
 
 
 def get_model(config):
-	model = Bert(dropout=config.dropout)
+	if config.train_type == 'normal':
+		model = Bert(dropout=config.dropout)
+	elif config.train_type == 'lastFour':
+		model = LastFour(dropout=config.dropout)
+
 	return model
 
 def get_crit():
@@ -116,8 +134,9 @@ def main(config):
 	crit = get_crit()
 
 	# Set bert model not to be trained
-	for param in model.bert.parameters():
-		param.requires_grad = False
+	if config.train_bert == 'False':
+		for param in model.bert.parameters():
+			param.requires_grad = False
 
 	# Check if GPU is available
 	if torch.cuda.is_available():

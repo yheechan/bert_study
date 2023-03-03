@@ -1,6 +1,6 @@
 import os
 from transformers import BertTokenizer
-from torch.utils.data import (Dataset, DataLoader)
+from torch.utils.data import (Dataset, DataLoader, RandomSampler, SequentialSampler)
 import numpy as np
 from sklearn.model_selection import train_test_split
 
@@ -74,8 +74,13 @@ def data_loader(paths, batch_size=16, max_length=512):
 	valid = Dataset(valid_x_np, valid_y_np, max_length)
 	test = Dataset(test_x_np, test_y_np, max_length)
 
-	train_dataloader = DataLoader(train, batch_size=batch_size, shuffle=True)
-	valid_dataloader = DataLoader(valid, batch_size=batch_size, shuffle=True)
-	test_dataloader = DataLoader(test, batch_size=batch_size)
+	train_sampler = RandomSampler(train)
+	train_dataloader = DataLoader(train, sampler=train_sampler, batch_size=batch_size, drop_last=True)
+
+	valid_sampler = SequentialSampler(valid)
+	valid_dataloader = DataLoader(valid, sampler=valid_sampler, batch_size=batch_size, drop_last=True)
+
+	test_sampler = SequentialSampler(test)
+	test_dataloader = DataLoader(test, sampler=test_sampler, batch_size=batch_size, drop_last=True)
 
 	return train_dataloader, valid_dataloader, test_dataloader

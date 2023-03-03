@@ -1,0 +1,30 @@
+{   'batch_size': 16,
+    'dropout': 0.1,
+    'lr': 0.0001,
+    'max_length': 50,
+    'n_epochs': 5,
+    'research_num': '03',
+    'research_subject': 'normal',
+    'train_bert': 'False',
+    'train_type': 'normal'}
+train: 11714
+validation:  2929
+test:  200
+
+Using device number:  0
+Start training...
+ Epoch  |  Train Loss  | Train Acc  | Val Loss | Val Acc | Elapsed
+--------------------------------------------------------------------------------
+   1    |   0.651961   | 60.783811  | 0.605369 | 67.73  | 17.78 
+   2    |   0.625595   | 63.618511  | 0.586073 | 69.54  | 17.48 
+   3    |   0.614669   | 64.233265  | 0.574776 | 73.02  | 17.55 
+   4    |   0.601985   | 65.838456  | 0.566864 | 76.02  | 17.58 
+   5    |   0.592523   | 67.341189  | 0.549946 | 75.27  | 17.63 
+
+
+Training complete! Best accuracy: 76.02%.
+training time:  1.467070226278156
+
+Using device number: 0
+test loss:  0.5881876572966576
+test acc:  70.83333333333333
